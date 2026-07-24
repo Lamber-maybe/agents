@@ -61,8 +61,10 @@ Recent PaperMod ships most SEO plumbing as templates — the audit is mostly
 Never edit files inside `themes/PaperMod/` — override by copying the template
 into the site's own `layouts/` if customization is truly needed. When changing
 a published post's URL (e.g. giving a CJK filename an ASCII `slug`), add the
-old path to `aliases` in frontmatter so Hugo emits a redirect — existing
-shared links must not break.
+old path to `aliases` in frontmatter so existing shared links don't break —
+and describe it accurately: Hugo aliases are client-side meta-refresh stubs
+with a canonical tag, not server 301s. Where the host supports real redirects
+(Netlify `_redirects`, Vercel config, Cloudflare rules), prefer those.
 
 ## 2. Indexability
 

@@ -30,8 +30,11 @@ skills/blog-seo-optimizer/
 │   ├── site-audit.md               # 全站技术体检（robots/AI爬虫/渲染/结构化数据/内链，含 Hugo+PaperMod 专项）
 │   ├── structured-data.md          # JSON-LD 模板（BlogPosting/FAQPage/Person/HowTo…）
 │   └── distribution.md             # 站外曝光手册（收录提交/IndexNow/AI引擎数据源/分发/中文生态）
-└── scripts/
-    └── seo_check.py                # 零依赖检测脚本：0-100 打分，支持中文宽度、批量目录、--json
+├── scripts/
+│   └── seo_check.py                # 零依赖检测脚本：0-100 打分，支持中文宽度、批量目录、--json
+└── evals/                          # 测试用例与夹具（首轮实测：带 skill 93.5% vs 基线 83.9%）
+    ├── evals.json
+    └── fixtures/                   # 中/英文未优化文章 + PaperMod 站点（主题需自行 clone）
 ```
 
 **安装（任选其一）：**

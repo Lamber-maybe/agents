@@ -97,7 +97,12 @@ Edit the file in place (or as the user directs). Keep the diff reviewable: don't
 
 ### 4. Verify and report
 
-Re-run `seo_check.py` — the score must improve; fix anything still red. Then give the user a report:
+Re-run `seo_check.py` — the score must improve; fix anything still red. Every
+number you put in the report (scores, widths, counts) must come from the
+script's actual output, not from memory or estimation — test runs show
+self-estimated figures are reliably wrong, and a report the user catches
+being off by one loses trust in the whole optimization. Then give the user a
+report:
 
 ```markdown
 ## 优化报告：<article>

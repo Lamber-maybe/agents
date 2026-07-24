@@ -1,0 +1,14 @@
+---
+title: K8s探针配置
+date: 2026-06-11
+---
+
+Kubernetes里面有三种探针：livenessProbe、readinessProbe和startupProbe。很多人分不清它们的区别，配置错了会导致服务反复重启或者流量打到没准备好的Pod上。
+
+liveness探测的是"进程还活着吗"，失败了kubelet会重启容器。readiness探测的是"能接流量吗"，失败了只是把Pod从Service的Endpoints里摘掉，不重启。startup是给启动慢的应用用的，它成功之前另外两个探针不会开始工作。
+
+我们之前踩过一个坑：把数据库连接检查放进了liveness，结果数据库抖动的时候整个服务的Pod被批量重启，把一次小故障放大成了全面宕机。正确的做法是liveness只检查进程本身的健康，依赖项的检查放进readiness。
+
+配置上还有几个参数容易搞错。initialDelaySeconds是第一次探测前的等待，periodSeconds是间隔，failureThreshold是连续失败几次才算失败。默认的periodSeconds是10秒、failureThreshold是3，也就是最长30秒才能发现问题，对很多场景来说太慢了。
+
+用httpGet探针的时候，健康检查接口要够轻量，不要在里面做重查询。exec探针每次都要起进程，开销比httpGet大，能用http就用http。

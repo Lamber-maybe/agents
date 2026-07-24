@@ -1,0 +1,67 @@
+{
+  "skill_name": "blog-seo-optimizer",
+  "notes": "{WORK}/{OUT} are substituted per run with absolute work/ and outputs/ dirs (copy fixtures into work/ per run — agents edit in place). Fixture setup for eval 1: see fixtures/hugo-site/README.md (clone PaperMod). Iteration-1 results (2026-07-24, claude-fable-5): with_skill 29/31 (93.5%) vs without_skill 26/31 (83.9%). Assertions below already incorporate the iteration-1 grader feedback: alt-text and sameAs assertions gained honest-TODO branches (the old variants were unsatisfiable without fabricating), an answer-first-intro assertion was added, and eval 1 now protects existing post URLs. The year-end fixture post now seeds a real GitHub URL so the author-entity assertion is satisfiable.",
+  "evals": [
+    {
+      "id": 0,
+      "name": "optimize-article-zh",
+      "prompt": "我刚写完一篇博客《Docker镜像优化》，文件在 {WORK}/docker-slim.md，准备发到我的个人博客。发之前帮我优化一下 SEO / GEO / AEO，让它更容易被搜索引擎搜到、也更容易被 ChatGPT、Perplexity 这类 AI 搜索引用。直接修改那个文件。改完在 {OUT}/report.md 写一份优化说明：改了什么、为什么。注意：保留我的技术内容和语气，不要编造任何数据。",
+      "expected_output": "docker-slim.md rewritten with optimized title/description/slug/tags/cover fields, answer-first intro, question-form H2 sections, FAQ, alt text, preserved technical content and real numbers only; report.md explaining changes.",
+      "files": ["fixtures/article-zh/docker-slim.md"],
+      "assertions": [
+        "Frontmatter gains a meta description with SERP-appropriate width (100-175 display units, CJK chars counted as 2)",
+        "Title is changed from the generic 'Docker镜像优化' to something with a concrete differentiator (number/outcome/scope) and fits SERP width (15-75 display units)",
+        "The opening paragraph directly answers the topic (throat-clearing boilerplate like '随着容器技术的普及…' is gone)",
+        "Article gains at least 3 H2/H3 subheadings (original had 0)",
+        "A FAQ section (常见问题/FAQ heading) with at least 3 questions is present",
+        "The image has non-empty descriptive alt text in Chinese, OR an explicit TODO(author) note where the image content is unknowable — a fabricated description of unseen image content counts as failure",
+        "seo_check.py total score is at least 85/100",
+        "Frontmatter metadata completed: tags present AND lastmod/updated present AND cover/OG image referenced or explicitly flagged as TODO for the author",
+        "Original technical content preserved: multi-stage build, Alpine, Distroless, .dockerignore, dive, and the real 1.2GB/180MB numbers all still present",
+        "No fabricated data: every statistic/number in the optimized article either appears in the original article or is explicitly attributed to a verifiable source or marked as author TODO",
+        "report.md exists, explains what was changed and why, and all numbers it quotes (scores, counts) match reality"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "site-audit-papermod",
+      "prompt": "这是我的 Hugo 博客（PaperMod 主题），源码在 {WORK}/my-blog/。帮我做一次全站 SEO / GEO / AEO 体检，目标是提高整站的收录和曝光：找出问题，能直接修的就修（改配置、改文章都行，但不要改 themes/ 里的主题文件），最后在 {OUT}/audit-report.md 给我一份体检报告和按优先级排序的行动清单（包括我要在站外做的事，比如提交收录之类）。",
+      "expected_output": "hugo.toml gains enableRobotsTXT, env=production, site description, ShowFullTextinRSS, hasCJKLanguage, schema/sameAs, default OG image (or flagged TODO); post frontmatter fixed (descriptions, slug+aliases for non-ASCII filename); audit-report.md with prioritized on-site findings and off-site actions (Search Console, Bing/IndexNow).",
+      "files": ["fixtures/hugo-site/my-blog"],
+      "assertions": [
+        "hugo.toml gains enableRobotsTXT = true",
+        "The PaperMod production-env trap is addressed: params env = \"production\" set in config (or the report explicitly explains the robots.txt Disallow-all / noindex production behavior and the build requirement)",
+        "Site-level meta description added (params.description in hugo.toml)",
+        "Full-content RSS enabled (ShowFullTextinRSS = true)",
+        "Author entity configured with the GitHub URL present in the site content (schema sameAs / social icons), not left as a commented placeholder",
+        "Default OG/social image configured (params images) or explicitly flagged as an action item with the required size",
+        "All three posts missing descriptions (docker-slim, k8s-probes, 我的2025年终总结) gain a description in frontmatter",
+        "The non-ASCII filename post (我的2025年终总结.md) gets an ASCII URL (slug or rename) AND the old URL is preserved via aliases/redirect",
+        "The three ASCII-named posts keep their original URLs (no renames or slug changes to docker-slim, k8s-probes, go-error-handling)",
+        "No files under themes/PaperMod/ were modified",
+        "audit-report.md exists with findings ranked by priority AND a dedicated off-site section mentioning at least Google Search Console and Bing/IndexNow submission",
+        "The report does not invent problems or claim unverified successes (e.g. does not claim Hugo lacks sitemap/RSS by default; build-verification claims are only made if a build actually ran)"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "optimize-article-en",
+      "prompt": "I just finished a post for my dev blog: {WORK}/fastapi-auth.md. Before I publish, optimize it for SEO and for AI search visibility (getting cited by ChatGPT / Perplexity / Google AI Overviews). Edit the file in place. Keep my voice and don't invent any facts, stats, or links. Then write a summary of what you changed and why to {OUT}/report.md.",
+      "expected_output": "fastapi-auth.md with SERP-width title/description, slug/tags/lastmod, answer-first opening, question-form sections, FAQ, preserved code and firsthand anecdotes, no invented facts; report.md explaining changes.",
+      "files": ["fixtures/article-en/fastapi-auth.md"],
+      "assertions": [
+        "Frontmatter gains a meta description with SERP-appropriate width (110-175 display units)",
+        "Title is changed from the vague 'Notes on FastAPI authentication' to a specific, width-compliant title (15-75 display units) that front-loads the topic",
+        "The opening paragraph directly answers the topic (the 'In the modern world of web development…' boilerplate is gone)",
+        "Article gains at least 3 H2/H3 subheadings (original had 0)",
+        "A FAQ section with at least 3 questions is present",
+        "seo_check.py total score is at least 85/100",
+        "Frontmatter metadata completed: tags AND slug (or ASCII filename already OK) AND lastmod/updated present",
+        "Both Python code blocks preserved intact (create_access_token and get_current_user/OAuth2PasswordBearer)",
+        "The author's firsthand anecdotes preserved in substance (the 24-hour expiry mistake, the missing type claim, the tokenUrl debugging story), and the author's voice phrases survive (e.g. 'blessing and a curse' or 'can of worms')",
+        "No invented facts, statistics, or links: everything added is either from the original, generic best-practice knowledge attributed appropriately, or marked TODO — the phantom 'example repo' link must be flagged, not fabricated",
+        "report.md exists, explains what was changed and why, and all numbers it quotes match reality"
+      ]
+    }
+  ]
+}
