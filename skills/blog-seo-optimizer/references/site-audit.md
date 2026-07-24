@@ -54,9 +54,15 @@ Recent PaperMod ships most SEO plumbing as templates — the audit is mostly
 | No default OG image | `[params] images = ["/og-default.png"]` (per-post `cover.image` overrides) |
 | llms.txt template unused | PaperMod ships a `layouts/llms.txt` — enable via a custom `llms` output format on home in config `[outputs]` (check the theme's docs/wiki for the exact block of the installed version) |
 | Meta description per post | fallback chain is page `description` → `summary` → site description — so per-post `description` frontmatter still matters (content inventory, §11) |
+| CJK site: wordcount/summary/reading time all wrong | `hasCJKLanguage = true` — without it Hugo counts CJK text as one giant "word", breaking auto-summaries (which feed the description fallback), reading time, and `summaryLength` truncation |
+| No FAQPage JSON-LD (theme doesn't ship it) | add via PaperMod's official extension hook `layouts/_partials/extend_head.html` (older versions: `layouts/partials/extend_head.html`) — never edit the theme |
+| Every new post starts with bare frontmatter | write `archetypes/default.md` with `description`/`tags`/`lastmod`/`slug` placeholder fields so `hugo new` scaffolds them — fixes the root cause, not just today's posts |
 
 Never edit files inside `themes/PaperMod/` — override by copying the template
-into the site's own `layouts/` if customization is truly needed.
+into the site's own `layouts/` if customization is truly needed. When changing
+a published post's URL (e.g. giving a CJK filename an ASCII `slug`), add the
+old path to `aliases` in frontmatter so Hugo emits a redirect — existing
+shared links must not break.
 
 ## 2. Indexability
 

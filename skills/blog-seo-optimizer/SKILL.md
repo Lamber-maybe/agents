@@ -71,6 +71,12 @@ Read the whole article, then determine:
 
 If the user supplied a target keyword, use it; otherwise infer and state your choice in the report so the user can correct it.
 
+Also judge whether the post *wants* full treatment: personal notes, diaries,
+and year-in-review posts deserve metadata hygiene (description, slug, tags)
+but not FAQ sections and keyword-tuned headings — over-optimizing personal
+writing reads as spam and erodes the site's human voice. Say so in the report
+instead of forcing the checklist.
+
 ### 3. Optimize — read `references/article-checklist.md` and apply it
 
 That file is the full per-item guide (targets, examples, CJK variants, why each item works). The high-level moves, in order of impact:

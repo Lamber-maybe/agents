@@ -166,7 +166,8 @@ section.
   - If you can see the user's other posts (repo/site available), find real link targets. If not, list suggested anchor points in the report for the user to fill.
 - **Internal, incoming**: flag in the report — "add links *to* this post from [likely related posts]". New posts with zero inbound internal links are orphans and index slowly.
 - **External**: 1–3 links to genuinely authoritative sources (official docs, standards, original studies). Outbound links to good sources are a trust signal, not a leak. Keep default follow (don't blanket-nofollow references).
-- Check for broken links while you're in there.
+  - No network access to verify? Canonical, stable URLs you're confident of (official docs landing pages, well-known project repos) may still be added — flag them "verify before publish" in the report. Never add deep links you can't verify, and never invent a URL.
+- Check for broken links and missing referenced assets (images that 404) while you're in there.
 
 ## 12. Frontmatter completeness
 
